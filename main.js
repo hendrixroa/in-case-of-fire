@@ -5,7 +5,6 @@ const BrowserWindow = electron.BrowserWindow
 const Tray = electron.Tray
 const Menu = electron.Menu
 const dialog = electron.dialog
-
 let trayIcon = null
 let trayMenu = null
 

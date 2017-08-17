@@ -33,12 +33,13 @@ class Main extends Component {
 
   checkDir(path) {
     Git(path).status((err,res) => { 
-      const numberChanges =  !err ? res.files.length : null 
-      let buffer = this.state.changes
-      buffer.push(numberChanges)
-      this.setState({
-        changes: buffer
-      })
+      if(!err){
+        let buffer = this.state.changes
+        buffer.push(res.files.length)
+        this.setState({
+          changes: buffer
+        })
+      }
     })
   }
 
@@ -46,15 +47,24 @@ class Main extends Component {
     const path = dialog.showOpenDialog({
       properties: ['openDirectory']
     })
-    console.log(path)
-    let buffer = this.state.projects
-    buffer.push({dir: path[0]})
-    this.setState({
-      projects: buffer
-    })
-    this.checkDir(path[0])
-    storage.set('projects', this.state.projects , (error) => {
-      if (error) throw error
+    Git(path[0]).status((err,res) => { 
+      if(!err){
+        let bufferProyects = this.state.projects
+        let bufferChanges = this.state.changes
+        bufferProyects.push({dir: path[0]})
+        bufferChanges.push(res.files.length)
+        this.setState({
+          projects: bufferProyects,
+          changes: bufferChanges
+        })
+        storage.set('projects', this.state.projects , (error) => {
+          if (error) throw error
+        })
+      }else{
+        let notificationError = new Notification('Error', {
+          body: 'This folder is not a repository Git, please execute `git init`'
+        })
+      }
     })
   }
 
