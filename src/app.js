@@ -50,25 +50,20 @@ class Main extends Component {
     })
   }
 
-  listProjects() {
-    if(this.state.projects.length > 0){
-      return this.state.projects.map((project) => {
-        (<p> project.dir </p>)
-      })
-    }
-    return null;
-  }
-
   render(){
     return (
       <div>
         <div id="empty">
           <p>Empty Projects :(</p>
         </div>
-          <button type="button" onClick={this.addProjects.bind(this)} id="addProjects">Add One</button>
-          <button type="button" id="deleteProjects">delete projects</button>
-          <div id="projects">
-            {this.listProjects() ? this.listProjects() : '' }
+          <button type="button" onClick={this.addProjects.bind(this)}>Add One</button>
+          <button type="button" onClick={this.deleteProjects.bind(this)}>delete projects</button>
+          <div>
+            {
+              this.state.projects.map((project, index) => {
+                return (<p key={ index }> {project.dir} </p>)
+              }) 
+            }
           </div>
       </div>
     );
