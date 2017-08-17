@@ -4,13 +4,15 @@ const { dialog } = window.require('electron').remote
 const app = window.require('electron').remote.app
 const storage = window.require('electron-json-storage')
 const _ = require('lodash')
+const Git = window.require('simple-git')
 
 class Main extends Component {
   constructor(props){
     super()
 
     this.state = {
-      projects: []
+      projects: [],
+      changes: []
     }
 
     storage.getAll((error, data) => {
@@ -21,7 +23,22 @@ class Main extends Component {
         this.setState({
           projects: data.projects
         })
+
+        data.projects.forEach((project, index) => {
+          this.checkDir(project.dir)
+        })
       }
+    })
+  }
+
+  checkDir(path) {
+    Git(path).status((err,res) => { 
+      const numberChanges =  !err ? res.files.length : null 
+      let buffer = this.state.changes
+      buffer.push(numberChanges)
+      this.setState({
+        changes: buffer
+      })
     })
   }
 
@@ -29,16 +46,16 @@ class Main extends Component {
     const path = dialog.showOpenDialog({
       properties: ['openDirectory']
     })
-    console.log('antes de agregar', this.state.projects)
+    console.log(path)
     let buffer = this.state.projects
-    buffer.push({dir: path})
+    buffer.push({dir: path[0]})
     this.setState({
       projects: buffer
     })
+    this.checkDir(path[0])
     storage.set('projects', this.state.projects , (error) => {
       if (error) throw error
     })
-    console.log('Se agregaron estos proyectos', this.state.projects)
   }
 
   deleteProjects() {
@@ -52,16 +69,18 @@ class Main extends Component {
 
   render(){
     return (
-      <div>
-        <div id="empty">
-          <p>Empty Projects :(</p>
-        </div>
+      <div> 
+        { this.state.projects.length === 0 ? 
+          (<div>
+            <p>Empty Projects :(</p>
+          </div>) : ''
+        }
           <button type="button" onClick={this.addProjects.bind(this)}>Add One</button>
           <button type="button" onClick={this.deleteProjects.bind(this)}>delete projects</button>
           <div>
             {
               this.state.projects.map((project, index) => {
-                return (<p key={ index }> {project.dir} </p>)
+                return (<div className="box-projects" key={ index }> {project.dir} <span className="number-changes">{ this.state.changes[index] !== null ? this.state.changes[index] : 'X'}</span></div>)
               }) 
             }
           </div>

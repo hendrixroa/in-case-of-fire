@@ -39,9 +39,7 @@ createWindow =  () => {
     mainWindow.hide()
   })
 
-
-  trayIcon = new Tray(path.join(__dirname, 'resources/img/icon.png'));
-
+  trayIcon = new Tray(path.join(__dirname, 'resources/img/icon.jpg'));
 
   const trayMenuTemplate = [
     {

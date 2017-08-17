@@ -5,3 +5,17 @@ body {
     overflow: hidden;
     width: 368px;
 }
+
+.box-projects {
+    background: #0eef27;
+    border-style: solid;
+    height: 60px;
+} 
+
+.number-changes {
+    background: blue;
+    border-style: solid;
+    border-radius: 40%;
+    border-color: blue;
+    color: white;
+}
