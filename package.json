@@ -6,7 +6,9 @@
   "scripts": {
     "start": "npm run compile && electron main.js",
     "compile": "browserify -t [ babelify --presets [ react es2015 ] ] src/app.js -o build/js/app.js",
-    "dist": "build -l deb --ia32 -p onTag"
+    "dist": "build -l deb --ia32 -p onTag",
+    "package": "electron-packager . --overwrite --platform=linux --arch=ia32  --prune=false --out=dist",
+    "deb": "electron-installer-debian --src dist/in-case-of-fire-linux-ia32/ --arch i386 --config config.json"
   },
   "repository": "https://github.com/hendrixroa/in-case-of-fire",
   "keywords": [
@@ -29,7 +31,9 @@
     "browserify": "^13.0.1",
     "electron": "~1.6.2",
     "electron-builder": "^19.19.1",
+    "electron-installer-debian": "^0.5.2",
     "electron-json-storage": "^3.0.7",
+    "electron-packager": "^8.7.2",
     "simple-git": "^1.75.0"
   },
   "dependencies": {
