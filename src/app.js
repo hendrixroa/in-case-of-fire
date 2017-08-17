@@ -5,14 +5,14 @@ const app = window.require('electron').remote.app
 const storage = window.require('electron-json-storage')
 const _ = require('lodash')
 const Git = window.require('simple-git')
+let num=0
 
 class Main extends Component {
   constructor(props){
     super()
 
     this.state = {
-      projects: [],
-      changes: []
+      projects: []
     }
 
     storage.getAll((error, data) => {
@@ -22,22 +22,6 @@ class Main extends Component {
         console.log('cargando proyectos', data.projects)
         this.setState({
           projects: data.projects
-        })
-
-        data.projects.forEach((project, index) => {
-          this.checkDir(project.dir)
-        })
-      }
-    })
-  }
-
-  checkDir(path) {
-    Git(path).status((err,res) => { 
-      if(!err){
-        let buffer = this.state.changes
-        buffer.push(res.files.length)
-        this.setState({
-          changes: buffer
         })
       }
     })
@@ -50,12 +34,9 @@ class Main extends Component {
     Git(path[0]).status((err,res) => { 
       if(!err){
         let bufferProyects = this.state.projects
-        let bufferChanges = this.state.changes
-        bufferProyects.push({dir: path[0]})
-        bufferChanges.push(res.files.length)
+        bufferProyects.push({dir: path[0], changes: res.files.length})
         this.setState({
           projects: bufferProyects,
-          changes: bufferChanges
         })
         storage.set('projects', this.state.projects , (error) => {
           if (error) throw error
@@ -73,7 +54,8 @@ class Main extends Component {
       if (error) throw error;
     })
     this.setState({
-      projects: []
+      projects: [],
+      changes: []
     })
   }
 
@@ -90,7 +72,9 @@ class Main extends Component {
           <div>
             {
               this.state.projects.map((project, index) => {
-                return (<div className="box-projects" key={ index }> {project.dir} <span className="number-changes">{ this.state.changes[index] !== null ? this.state.changes[index] : 'X'}</span></div>)
+                num++
+                console.log(num)
+                return (<div className="box-projects" key={ index }> {project.dir} <span className="number-changes">{project.changes}</span></div>)
               }) 
             }
           </div>
