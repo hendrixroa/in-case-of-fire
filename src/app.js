@@ -58,7 +58,8 @@ class Main extends Component {
                       body: 'The project ' + project.dir.split('/').pop() + 'has been updated! on ' + Date()
                     })
                   }) 
-              }else{
+              }
+              if(project.changes > 0 && this.state.modeAutomatic === false){
                 const notificationWarning = new Notification('Warning', {
                   body: 'The project ' + project.dir.split('/').pop() + ' has changes not sync, please commit and push or checked option Mode Automatic'
                 })
