@@ -58,7 +58,7 @@ class Main extends Component {
                   .add('./*')
                   .commit("first commit!")
                   .addRemote('origin', 'some-repo-url')
-                  .push( function () {
+                  .push(function () {
                       // done. 
                   })
               }
