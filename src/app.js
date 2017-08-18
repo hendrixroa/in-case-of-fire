@@ -54,6 +54,13 @@ class Main extends Component {
                 let notificationProjects = new Notification('Warning', {
                   body: 'You have ' + projectsBackup.length + ' not sync, please commit and push changes :)'
                 })
+                Git(projectsFiltered[0].dir)
+                  .add('./*')
+                  .commit("first commit!")
+                  .addRemote('origin', 'some-repo-url')
+                  .push(['origin', 'master'], function () {
+                      // done. 
+                  })
               }
             })
           })
