@@ -5,7 +5,6 @@ const app = window.require('electron').remote.app
 const storage = window.require('electron-json-storage')
 const _ = require('lodash')
 const Git = window.require('simple-git')
-let num=0
 
 class Main extends Component {
   constructor(props){
@@ -21,10 +20,36 @@ class Main extends Component {
       if(!_.isEmpty(data.projects)){
         console.log('cargando proyectos', data.projects)
         this.setState({
-          projects: data.projects
+          projects: data.projects.sort(this.sortProjects)
         })
       }
+      this.checkUpdate();
     })
+  }
+
+  checkUpdate(){
+    setInterval(() => {
+      console.log('my projects', this.state.projects)
+      let projectsBackup = []
+      if(this.state.projects.length > 0){
+        this.state.projects.forEach((project,index) => {
+          Git(project.dir).status((err,res) =>{
+            projectsBackup.push({ dir: project.dir, changes: res.files.length })
+            console.log('variables : ',project,index,projectsBackup)
+            storage.set('projects', projectsBackup , (error) => {
+              if (error) throw error
+              this.setState({
+                projects: projectsBackup.sort(this.sortProjects)
+              })
+            })
+          })
+        })        
+      }          
+    },5000)
+  }
+
+  sortProjects(pro1,pro2) {
+    return pro2.changes - pro1.changes
   }
 
   addProjects() {
@@ -38,7 +63,7 @@ class Main extends Component {
         this.setState({
           projects: bufferProyects,
         })
-        storage.set('projects', this.state.projects , (error) => {
+        storage.set('projects', bufferProyects , (error) => {
           if (error) throw error
         })
       }else{
@@ -54,8 +79,7 @@ class Main extends Component {
       if (error) throw error;
     })
     this.setState({
-      projects: [],
-      changes: []
+      projects: []
     })
   }
 
@@ -68,12 +92,11 @@ class Main extends Component {
           </div>) : ''
         }
           <button type="button" onClick={this.addProjects.bind(this)}>Add One</button>
-          <button type="button" onClick={this.deleteProjects.bind(this)}>delete projects</button>
+          <button type="button" onClick={this.deleteProjects.bind(this)}>delete projects</button><br/>
+          <input type="checkbox"/><span>Automatic</span>
           <div>
             {
               this.state.projects.map((project, index) => {
-                num++
-                console.log(num)
                 return (<div className="box-projects" key={ index }> {project.dir} <span className="number-changes">{project.changes}</span></div>)
               }) 
             }
