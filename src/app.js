@@ -56,8 +56,8 @@ class Main extends Component {
                 })
                 Git(projectsFiltered[0].dir)
                   .add('./*')
-                  .commit("first commit!")
-                  .push(['origin', 'master'], function () {
+                  .commit("commit auto test!")
+                  .push(function () {
                       // done. 
                   })
               }
