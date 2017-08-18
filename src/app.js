@@ -11,16 +11,24 @@ class Main extends Component {
     super()
 
     this.state = {
-      projects: []
+      projects: [],
+      modeAutomatic: false
     }
 
     storage.getAll((error, data) => {
       if (error) throw error
-  
+      
+      console.log('DATA', data)
       if(!_.isEmpty(data.projects)){
         console.log('cargando proyectos', data.projects)
         this.setState({
           projects: data.projects.sort(this.sortProjects)
+        })
+      }
+      if(data.mode){
+        console.log('entre en data mode', data.mode)
+        this.setState({
+          modeAutomatic: data.mode
         })
       }
       this.checkUpdate();
@@ -74,12 +82,25 @@ class Main extends Component {
     })
   }
 
+  changeMode(){
+    storage.set('mode', !this.state.modeAutomatic, (err) => {
+      if (err) throw err
+    })
+    this.setState({
+      modeAutomatic: !this.state.modeAutomatic
+    })
+  }
+
   deleteProjects() {
     storage.remove('projects', function(error) {
       if (error) throw error;
     })
+    storage.remove('mode', function(error) {
+      if (error) throw error;
+    })
     this.setState({
-      projects: []
+      projects: [],
+      modeAutomatic: false
     })
   }
 
@@ -93,7 +114,7 @@ class Main extends Component {
         }
           <button type="button" onClick={this.addProjects.bind(this)}>Add One</button>
           <button type="button" onClick={this.deleteProjects.bind(this)}>delete projects</button><br/>
-          <input type="checkbox"/><span>Automatic</span>
+          <input type="checkbox" onChange={this.changeMode.bind(this)} checked={this.state.modeAutomatic}/><span>Mode Automatic</span>
           <div>
             {
               this.state.projects.map((project, index) => {
