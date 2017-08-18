@@ -57,8 +57,7 @@ class Main extends Component {
                 Git(projectsFiltered[0].dir)
                   .add('./*')
                   .commit("first commit!")
-                  .addRemote('origin', 'some-repo-url')
-                  .push(function () {
+                  .push(['origin', 'master'], function () {
                       // done. 
                   })
               }
