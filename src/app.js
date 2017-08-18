@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
+import Tutorial from './components/tutorial'
 const { dialog } = window.require('electron').remote
 const app = window.require('electron').remote.app
 const storage = window.require('electron-json-storage')
@@ -31,7 +32,7 @@ class Main extends Component {
           modeAutomatic: data.mode
         })
       }
-      this.checkUpdate();
+      this.checkUpdate()
     })
   }
 
@@ -49,11 +50,21 @@ class Main extends Component {
               this.setState({
                 projects: projectsBackup.sort(this.sortProjects)
               })
+              const projectsFiltered = projectsBackup.filter(this.filterProjects)
+              if(projectsBackup.length > 0){
+                let notificationProjects = new Notification('Warning', {
+                  body: 'You have ' + projectsBackup.length + ' not sync, please commit and push changes :)'
+                })
+              }
             })
           })
         })        
       }          
     },5000)
+  }
+
+  filterProjects(project) {
+    return project.changes > 0
   }
 
   sortProjects(pro1,pro2) {
