@@ -60,7 +60,7 @@ class Main extends Component {
                   }) 
               }else{
                 const notificationWarning = new Notification('Warning', {
-                  body: 'The project ' + project.dir.split('/').pop() + 'has changes not sync, please commit and push or checked option Mode Automatic'
+                  body: 'The project ' + project.dir.split('/').pop() + ' has changes not sync, please commit and push or checked option Mode Automatic'
                 })
               }
             })
