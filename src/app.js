@@ -42,24 +42,26 @@ class Main extends Component {
       let projectsBackup = []
       if(this.state.projects.length > 0){
         this.state.projects.forEach((project,index) => {
-          Git(project.dir).status((err,res) =>{
+          Git(project.dir).status((err,res) => {
             projectsBackup.push({ dir: project.dir, changes: res.files.length })
             storage.set('projects', projectsBackup , (error) => {
               if (error) throw error
               this.setState({
                 projects: projectsBackup.sort(this.sortProjects)
               })
-              const projectsFiltered = projectsBackup.filter(this.filterProjects)
-              if(projectsFiltered.length > 0){
-                let notificationProjects = new Notification('Warning', {
-                  body: 'You have ' + projectsBackup.length + ' not sync, please commit and push changes :)'
-                })
-                Git(projectsFiltered[0].dir)
+              if(project.changes > 0 && this.state.modeAutomatic === true){
+                Git(project.dir)
                   .add('./*')
-                  .commit("commit auto test!")
-                  .push(function () {
-                      // done. 
-                  })
+                  .commit('commit saved on ' + Date())
+                  .push(() => {
+                    const notificationPush = new Notification('Success push', {
+                      body: 'The project ' + project.dir.split('/').pop() + 'has been updated! on ' + Date()
+                    })
+                  }) 
+              }else{
+                const notificationWarning = new Notification('Warning', {
+                  body: 'The project ' + project.dir.split('/').pop() + 'has changes not sync, please commit and push or checked option Mode Automatic'
+                })
               }
             })
           })
