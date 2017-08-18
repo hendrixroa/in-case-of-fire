@@ -44,14 +44,13 @@ class Main extends Component {
         this.state.projects.forEach((project,index) => {
           Git(project.dir).status((err,res) =>{
             projectsBackup.push({ dir: project.dir, changes: res.files.length })
-            console.log('variables : ',project,index,projectsBackup)
             storage.set('projects', projectsBackup , (error) => {
               if (error) throw error
               this.setState({
                 projects: projectsBackup.sort(this.sortProjects)
               })
               const projectsFiltered = projectsBackup.filter(this.filterProjects)
-              if(projectsBackup.length > 0){
+              if(projectsFiltered.length > 0){
                 let notificationProjects = new Notification('Warning', {
                   body: 'You have ' + projectsBackup.length + ' not sync, please commit and push changes :)'
                 })
