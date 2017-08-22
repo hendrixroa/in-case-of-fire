@@ -1,6 +1,6 @@
 {
-  "dest": "dist/installers/linux",
-  "icon": "resources/img/icon.png",
+  "dest": "releases/installers",
+  "icon": "resources/img/icon.jpg",
   "categories": [
     "Programming"
   ],

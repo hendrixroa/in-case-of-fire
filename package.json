@@ -6,9 +6,12 @@
   "scripts": {
     "start": "npm run compile && electron main.js",
     "compile": "browserify -t [ babelify --presets [ react es2015 ] ] src/app.js -o build/js/app.js",
-    "dist": "build -l deb --ia32 -p onTag",
-    "package": "npm run compile && electron-packager . --overwrite --platform=linux --arch=ia32  --prune=false --out=dist",
-    "deb": "npm run package && electron-installer-debian --src dist/in-case-of-fire-linux-ia32/ --arch i386 --config config.json"
+    "package": "npm run compile && electron-packager . --overwrite --all  --prune=false --out=dist",
+    "deb": "electron-installer-debian --src dist/in-case-of-fire-linux-ia32/ --arch i386 --config config.json",
+    "deb64": "electron-installer-debian --src dist/in-case-of-fire-linux-x64/ --arch x64 --config config.json",
+    "windows32": "electron-installer-windows --src dist/in-case-of-fire-win32-ia32/ --config config.json",
+    "windows64": "electron-installer-windows --src dist/in-case-of-fire-win32-x64/ --config config.json",
+    "linuxWindows": "npm run package && npm run deb && npm run deb64 && npm run windows32 && npm run windows64"
   },
   "repository": "https://github.com/hendrixroa/in-case-of-fire",
   "keywords": [
@@ -30,8 +33,8 @@
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "electron": "~1.6.2",
-    "electron-builder": "^19.19.1",
     "electron-installer-debian": "^0.5.2",
+    "electron-installer-windows": "^0.2.0",
     "electron-json-storage": "^3.0.7",
     "electron-packager": "^8.7.2",
     "simple-git": "^1.75.0"
