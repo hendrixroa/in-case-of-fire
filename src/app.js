@@ -67,7 +67,7 @@ class Main extends Component {
           })
         })        
       }          
-    },50000)
+    },150000)
   }
 
   filterProjects(project) {
