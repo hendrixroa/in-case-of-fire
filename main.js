@@ -16,10 +16,9 @@ let mainWindow
 
 createWindow =  () => {
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: 500,
     height: 600,
-    frame: false,
-    resizable: false,
+    frame: false
   })
 
   mainWindow.loadURL(url.format({
@@ -28,7 +27,7 @@ createWindow =  () => {
     slashes: true
   }))
 
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null

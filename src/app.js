@@ -38,7 +38,6 @@ class Main extends Component {
 
   checkUpdate(){
     setInterval(() => {
-      console.log('my projects', this.state.projects)
       let projectsBackup = []
       if(this.state.projects.length > 0){
         this.state.projects.forEach((project,index) => {
@@ -68,7 +67,7 @@ class Main extends Component {
           })
         })        
       }          
-    },5000)
+    },50000)
   }
 
   filterProjects(project) {
