@@ -6,6 +6,9 @@ Inspired in the meme in case of fire, `git push`. I make this Cross-platform apl
 
 If you have low internet connection and bad memory, this app can a help you in your projects with git.
 
+# How download ?
+
+Go to [Download](https://github.com/hendrixroa/in-case-of-fire/releases) and choose your compatible platform.
 
 ## TODO
 
@@ -14,4 +17,5 @@ If you have low internet connection and bad memory, this app can a help you in y
 * Autorun when init system
 * Timeout reminder projects customizable
 * Autodetect low connection and reminder upload changes
+* Build for OSx and Windows
 * A version lite for command line
