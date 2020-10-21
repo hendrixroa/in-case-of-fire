@@ -32,7 +32,7 @@
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
-    "electron": "~1.6.2",
+    "electron": "~10.1.4",
     "electron-installer-debian": "^0.5.2",
     "electron-installer-windows": "^0.2.0",
     "electron-json-storage": "^3.0.7",
